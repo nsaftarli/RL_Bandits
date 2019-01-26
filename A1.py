@@ -29,19 +29,20 @@ def setEnv(nArms):
 def averageReward(currRew, currAvg, n):
     return currAvg + (1/n) * (currRew - currAvg)
 
-def rollReward(prob):
+def rollReward(nArms, ind, prob):
     # Roll a number that samples from the uniform distribution [0,1)
     # If the number is smaller than the probability, return a reward
+    rewTable = np.zeros((nArms,))
     roll = np.random.rand(1)[0]
     if roll <= prob:
-        return 1
-    else:
-        return 0
+        rewTable[ind] = 1
+    return rewTable
 
 
 # Update estimated probabilities
-def updateProbs(ind, reward, table, n):
-    table[ind] += (1/n) * (reward - table[ind])
+def updateProbs(reward, table, n):
+    # table[ind] += (1/n) * (reward - table[ind])
+    table += (1/n) * (reward - table)
     return table
 
 # Pick whether or not the move made is greedy
@@ -62,8 +63,8 @@ def greedyArm(trueDistrib, estDistrib, n):
         indPicked = maxInds[0][0]
         armPicked = trueDistrib[indPicked]
     # Check whether or not the action gets a reward. Update estimated table.
-    rewardVal = rollReward(armPicked)
-    estDistrib = updateProbs(indPicked, rewardVal, estDistrib, n)
+    rewardVal = rollReward(len(estDistrib), indPicked, armPicked)
+    estDistrib = updateProbs(rewardVal, estDistrib, n)
     return estDistrib
 
 # Action to take if making a random move
@@ -72,8 +73,8 @@ def randomArm(trueDistrib, estDistrib, n):
     indPicked = np.random.randint(0, len(estDistrib))
     armPicked = trueDistrib[indPicked]
     # Check whether or not the action gets a reward. Update estimated table.
-    rewardVal = rollReward(armPicked)
-    estDistrib = updateProbs(indPicked, rewardVal, estDistrib, n)
+    rewardVal = rollReward(len(estDistrib), indPicked, armPicked)
+    estDistrib = updateProbs(rewardVal, estDistrib, n)
     return estDistrib
 
 
