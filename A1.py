@@ -2,7 +2,25 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
+def main():
+    greedyYes = 0
+    greedyNo = 0
+    nArms = 10
+    eps = 0.9
+    totalrew = 0
+    trueDistrib = setEnv(nArms)
+    # trueDistrib = [0.20667192, 0.21488821, 0.60482498, 0.30061569, 0.44926704, 0.98593824, 0.3833595,  0.98111571, 0.99304015, 0.96186659]
+    estDistrib = np.full((nArms,), 1/nArms)
+    print(trueDistrib)
+    for i in range(1, 100000):
+        isGreedy = rollGreedy(eps)
+        estDistrib = greedyArm(trueDistrib, estDistrib, i) if isGreedy else randomArm(trueDistrib, estDistrib, i)
 
+    print(estDistrib)
+    plotHistograms(trueDistrib, estDistrib)
+
+
+# Generate a true probability distribution of nArm bandits
 def setEnv(nArms):
     trueDist = np.random.rand(nArms,)
     return trueDist
@@ -20,55 +38,73 @@ def rollReward(prob):
     else:
         return 0
 
+
+# Update estimated probabilities
 def updateProbs(ind, reward, table, n):
     table[ind] += (1/n) * (reward - table[ind])
     return table
 
+# Pick whether or not the move made is greedy
+def rollGreedy(e):
+    return True if np.random.rand(1)[0] <= e else False
 
-def pickArm(trueDistrib, estDistrib, eps, n):
-    # Pick with probability eps whether or not to make the greedy move
-    greedy = True
-    numGen = np.random.rand(1)[0]
-    if numGen < eps:
-        greedy = False
 
-    # If it's the greedy move, pick the highest value in the estimated probability table
-    if greedy:
-        # Greedy move
-        maxInds = np.argwhere(estDistrib == np.amax(estDistrib))
-        # print(estDistrib)
-        if len(maxInds) > 1:
-            indPicked = np.random.randint(0, len(maxInds) - 1)
-            armPicked = trueDistrib[indPicked]
-        else:
-            indPicked = maxInds[0][0]
-            armPicked = trueDistrib[indPicked]
-    # Otherwise, pick a value at random
+# Action to take if making a greedy move
+def greedyArm(trueDistrib, estDistrib, n):
+    # Pick the indices from the estimated distribution with the highest values
+    # If more than one of the same highest value, pick one at random
+    # Take the arm with a probability corresponding to the true distribution
+    maxInds = np.argwhere(estDistrib == np.amax(estDistrib))
+    if len(maxInds) > 1:
+        indPicked = maxInds[np.random.randint(0, len(maxInds))]
+        armPicked = trueDistrib[np.squeeze(indPicked)]
     else:
-        indPicked = np.random.randint(0, len(estDistrib) - 1)
+        indPicked = maxInds[0][0]
         armPicked = trueDistrib[indPicked]
+    # Check whether or not the action gets a reward. Update estimated table.
+    rewardVal = rollReward(armPicked)
+    estDistrib = updateProbs(indPicked, rewardVal, estDistrib, n)
+    return estDistrib
 
-    # Given the arm, roll a reward for the arm
+# Action to take if making a random move
+def randomArm(trueDistrib, estDistrib, n):
+    # Pick an index at random. Take the true probability corresponding to it.
+    indPicked = np.random.randint(0, len(estDistrib))
+    armPicked = trueDistrib[indPicked]
+    # Check whether or not the action gets a reward. Update estimated table.
     rewardVal = rollReward(armPicked)
     estDistrib = updateProbs(indPicked, rewardVal, estDistrib, n)
     return estDistrib
 
 
-nArms = 10
-eps = 0.1
-totalrew = 0
-trueDistrib = setEnv(nArms)
-trueDistrib = [0.20667192, 0.21488821, 0.60482498, 0.30061569, 0.44926704, 0.98593824, 0.3833595,  0.98111571, 0.99304015, 0.96186659]
-estDistrib = np.full((nArms,), 1/nArms)
-print(trueDistrib)
+def plotHistograms(true, est):
+    plt.subplot(1, 2, 1)
+    plt.title("True Distribution")
+    plt.plot(true)
+    plt.subplot(1, 2, 2)
+    plt.title("Estimated Distribution")
+    plt.plot(est)
+    plt.show()
+
+
+# nArms = 10
+# eps = 0.9
+# totalrew = 0
+# trueDistrib = setEnv(nArms)
+# trueDistrib = [0.20667192, 0.21488821, 0.60482498, 0.30061569, 0.44926704, 0.98593824, 0.3833595,  0.98111571, 0.99304015, 0.96186659]
+# estDistrib = np.full((nArms,), 1/nArms)
+# print(trueDistrib)
+# # print(estDistrib)
+# for i in range(1, 100000):
+#     isGreedy = rollGreedy(eps)
+#     # estDistrib = pickArm(trueDistrib, estDistrib, , i)
+#     # totalrew += rew
+#     # print(rew)
 # print(estDistrib)
-for i in range(1, 100000):
-    estDistrib = pickArm(trueDistrib, estDistrib, eps, i)
-    # totalrew += rew
-    # print(rew)
-print(estDistrib)
+
+# plotHistograms(trueDistrib, estDistrib)
 
 
-
-
+if __name__ == '__main__':
+    main()
 
