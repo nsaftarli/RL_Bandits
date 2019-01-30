@@ -5,14 +5,16 @@ import matplotlib.pyplot as plt
 def main():
     nArms = 10
     eps = 0.9
-    totalrew = 0
-    trueDistrib = setEnv(nArms)
+    c = 0.1
+    trueDistrib = np.random.rand(nArms,)
     # trueDistrib = [0.20667192, 0.21488821, 0.60482498, 0.30061569, 0.44926704, 0.98593824, 0.3833595,  0.98111571, 0.99304015, 0.96186659]
     estDistrib = np.full((nArms,), 1/nArms)
+    actionCount = np.zeros((nArms,))
     print(trueDistrib)
     for i in range(1, 100000):
-        isGreedy = rollGreedy(eps)
-        estDistrib = greedyArm(trueDistrib, estDistrib, i) if isGreedy else randomArm(trueDistrib, estDistrib, i)
+        # isGreedy = rollGreedy(eps)
+        # estDistrib = greedyArm(trueDistrib, estDistrib, i) if isGreedy else randomArm(trueDistrib, estDistrib, i)
+        doUCB(estDistrib,)
 
     print(estDistrib)
     plotHistograms(trueDistrib, estDistrib)
