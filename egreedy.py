@@ -5,28 +5,22 @@ from Rewards import rollReward, updateProbs
 
 def main():
     config = {}
-    c = 2
     nArms = 10
-    nTimesChosen = np.zeros((10,))
+    eps = 0.9
+    totalrew = 0
     trueDistrib = np.random.rand(nArms,)
     estDistrib = np.full((nArms,), 1/nArms)
 
-    config['c'] = c
     config['nArms'] = nArms
+    config['eps'] = eps
+    config['totalrew'] = totalrew
     config['trueDistrib'] = trueDistrib
     config['estDistrib'] = estDistrib
-    config['nTimesChosen'] = nTimesChosen
+    
 
     for t in range(1, 100000):
         config['t'] = t
-        if t <= nArms:
-            armPulled = t-1
-            nTimesChosen[t-1] += 1
-            config['nTimesChosen'] = nTimesChosen
-        else:
-            armPulled, nTimesChosen = actionSelect('ucb', config)
-            config['nTimesChosen'] = nTimesChosen
-
+        armPulled = actionSelect('egreedy', config)
         config['armPulled'] = armPulled
         rewardTable = rollReward(config)
         estDistrib = updateProbs(rewardTable, estDistrib, t)
