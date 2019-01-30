@@ -8,12 +8,12 @@ def updateProbs(reward, table, n):
 def rollReward(config):
     nArms = config['nArms']
     armPulled = config['armPulled']
-    prob = config['prob']
     trueDistrib = config['trueDistrib']
+    prob = trueDistrib[armPulled]
     # Roll a number that samples from the uniform distribution [0,1)
     # If the number is smaller than the probability, return a reward
-    rewTable = np.zeros((nArms,))
+    rewardTable = np.zeros((nArms,))
     roll = np.random.rand(1)[0]
     if roll <= prob:
-        rewTable[ind] = 1
-    return rewTable
+        rewardTable[armPulled] = 1
+    return rewardTable
