@@ -30,8 +30,8 @@ def greedyArm(config):
     t = config['t']
     maxInds = np.argwhere(estDistrib == np.amax(estDistrib))
     if len(maxInds) > 1:
-        indPicked = maxInds[np.random.randint(0, len(maxInds))]
-        armPicked = trueDistrib[np.squeeze(indPicked)]
+        indPicked = np.squeeze(maxInds[np.random.randint(0, len(maxInds))])
+        armPicked = trueDistrib[indPicked]
     else:
         indPicked = maxInds[0][0]
         armPicked = trueDistrib[indPicked]
