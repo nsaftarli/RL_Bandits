@@ -4,14 +4,14 @@ def actionSelect(action, config):
     if action == 'egreedy':
         indPicked = greedyActionSelection(config)
     elif action == 'ucb':
-        pass
+        indPicked = ucbActionSelection(config)
 
     return indPicked
+
 
 def greedyActionSelection(config):
     eps = config['eps']
     isGreedy = rollGreedy(eps)
-
     indPicked = greedyArm(config) if isGreedy else randomArm(config)
     return indPicked
 
@@ -45,6 +45,28 @@ def randomArm(config):
     estDistrib = config['estDistrib']
     indPicked = np.random.randint(0, len(estDistrib))
     return indPicked
+
+# UCB Action Selection
+def ucbActionSelection(config):
+    c = config['c']
+    t = config['t']
+    nArms = config['nArms']
+    nTimesChosen = config['nTimesChosen']
+    estDistrib = config['estDistrib']
+
+    actions = estDistrib + c * np.sqrt(np.log(t)/nTimesChosen)
+    actionChosen = np.argmax(actions)
+    nTimesChosen[actionChosen] += 1
+    return actionChosen, nTimesChosen
+
+
+
+
+
+
+
+
+
 
 
 
