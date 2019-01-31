@@ -12,7 +12,9 @@ def main():
     estDistrib = np.full((nArms,), 1/nArms)
     optimalAction = np.argmax(trueDistrib)
     nTimesOptimal = 0
+    averageReward = 0
     optimalHistory = []
+    rewardHistory = []
 
     config['c'] = c
     config['nArms'] = nArms
@@ -36,14 +38,19 @@ def main():
         if t % 100 == 0:
             optPercent = (nTimesOptimal/t) * 100
             optimalHistory.append(optPercent)
+            rewardHistory.append(averageReward)
             print("Optimal choice was made " + str(optPercent) + "% of the time")
+            print("Average Reward is: " + str(averageReward))
         config['armPulled'] = armPulled
         rewardTable = rollReward(config)
+        reward = np.amax(rewardTable)
+        averageReward = averageReward * (t-1)/t + reward/t
         estDistrib = updateProbs(rewardTable, estDistrib, t)
         config['estDistrib'] = estDistrib
 
     plotHistograms(trueDistrib, estDistrib)
     plotOptimal(optimalHistory)
+    plotReward(rewardHistory)
 
 def plotHistograms(true, est):
     plt.suptitle("Real and Predicted Probability Distribution for 10-Armed Bandit Problem Using UCB Action Selection", fontsize=14)
@@ -61,7 +68,10 @@ def plotOptimal(hist):
     plt.show()
 
 
-
+def plotReward(hist):
+    plt.suptitle("Average Reward Over Time for 10-Armed Bandit Problem using Epsilon-Greedy Action Selection", fontsize=14)
+    plt.plot(hist)
+    plt.show()
 
 
 

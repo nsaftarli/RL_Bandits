@@ -28,7 +28,13 @@ Question 1.  Both the UCB algorithm as well as the $\epsilon$-greedy algorithm w
 	\includegraphics[scale=0.2]{eps_opt}
 	\caption{The UCB algorithm quickly converges on making the optimal move, whereas the $\epsilon$-greedy algorithm gets stuck at a local peak.}
 	\end{figure}
-	\item 
+	\item The UCB algorithm increases average reward over time, getting converging on the highest average reward possible whereas the $\epsilon$-greedy algorithm converges on a lower average reward. This is again due to the fact that the $\epsilon$-greedy algorithm is more likely to pick actions that are local optima. Figure 3 illustrates the convergence of the average reward over time.
+	\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.2]{ucb_rew}
+	\includegraphics[scale=0.2]{eps_rew}
+	\caption{The UCB algorithm converges to a higher average reward than the $\epsilon$-greedy algorithm due to its increased robustness to local optima (making the global action more likely to be chosen over time).}
+	\end{figure}
 	\end{enumerate}
 	
 	
