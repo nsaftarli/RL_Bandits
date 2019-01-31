@@ -17,7 +17,8 @@ def greedyActionSelection(config):
 
 
 def rollGreedy(eps):
-    return True if np.random.rand(1)[0] <= eps else False
+    val = np.random.rand(1)[0]
+    return True if val <= eps else False
 
 
 # Action to take if making a greedy move

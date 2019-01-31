@@ -1,5 +1,8 @@
 \documentclass{article}
-\usepackage{amsmath, amssymb}
+\usepackage[english]{babel}
+\usepackage{amsmath, amssymb, graphicx}
+\DeclareMathOperator*{\argmax}{argmax}
+\graphicspath{{./images/}}
 
 
 \title{CPS841 Reinforcement Learning - Assignment 1}
@@ -9,6 +12,35 @@
 \maketitle
 \newpage
 
-Question 1. 
+Question 1.  Both the UCB algorithm as well as the $\epsilon$-greedy algorithm were implemented, the latter as a baseline. Running each algorithm for $100,000$ rounds, the following observations were made:
+	\begin{enumerate}
+	\item For both the UCB algorithm as well as the $\epsilon$-greedy algorithm, the real probability distribution and estimated probability distribution were plotted. The results were as expected. As the focus is to select the option with the highest chance of receiving a reward, the estimated probability distribution does not generally accurately represent the true probability distribution for any more than 1 of 10 values where 10 represents the number of actions that can be taken in the 10-armed bandit problem. This is because there's no motivation other than maximizing the reward signal over time, which makes low-valued actions irrelevant over time, and predicting their actual probabilities is unnecessary; all that's necessary is to confirm that they are not optimal. Figure 1 illustrates this. There are two things important to note here. The first is that the estimated probability is acceptably accurate for a \textit{single} value in the distribution (\textit{i.e.} the peak of the estimated probability distribution is reasonably close to the actual value at that index in the true probability distribution). The second is that the $\epsilon$-greedy method failed at finding the optimal move.
+	\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.2]{ucb_pred}
+	\includegraphics[scale=0.2]{eps_pred}
+	\caption{Both the UCB and $\epsilon$-greedy algorithms predict the entire distribution incorrectly, but fairly accurately approximate a single probability.}
+	\end{figure}
+	\item The UCB algorithm converged on the optimal action much more reliably in the 10-armed bandit problem than did the $\epsilon$-greedy algorithm. This also makes sense since the $\epsilon$-greedy algorithm fails to have some measure of uncertainty. That is, if $\epsilon=0.9$, and some action produces a positive reward, the $\epsilon$-greedy algorithm is much more likely to choose that value and get stuck at a local optimum, because there's nothing to specify its uncertainty about the potential of other values to yield a high reward. This is shown in figure 2, as the algorithm starts off making the optimal action $10\%$ of the time (as expected), but which quickly drops down to $1\%$ as the non-optimal action is chosen more often. The UCB algorithm however increases the rate at which it makes the optimal action. This is because of two major factors. The first is that the UCB algorithm (\textit{i.e.} action selection specified by $A_t = \argmax_x [Q_t(a) + c\sqrt{\frac{lnt}{N_t(a)}}]$ has some notion of uncertainty, while the second makes it such that the degree of uncertainty is decreased over time. 
+	\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.2]{ucb_opt}
+	\includegraphics[scale=0.2]{eps_opt}
+	\caption{The UCB algorithm quickly converges on making the optimal move, whereas the $\epsilon$-greedy algorithm gets stuck at a local peak.}
+	\end{figure}
+	\item 
+	\end{enumerate}
+	
+	
 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 \end{document}
