@@ -4,6 +4,7 @@ from ActionSelect import actionSelect
 from Rewards import rollReward, updateProbs
 
 def main():
+    iterations = 100000
     config = {}
     c = 2
     nArms = 10
@@ -22,7 +23,7 @@ def main():
     config['estDistrib'] = estDistrib
     config['nTimesChosen'] = nTimesChosen
 
-    for t in range(1, 100000):
+    for t in range(1, iterations):
         config['t'] = t
         if t <= nArms:
             armPulled = t-1

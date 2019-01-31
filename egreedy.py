@@ -4,6 +4,7 @@ from ActionSelect import actionSelect
 from Rewards import rollReward, updateProbs
 
 def main():
+    iterations = 100000
     config = {}
     nArms = 10
     eps = 0.9
@@ -23,7 +24,7 @@ def main():
     config['estDistrib'] = estDistrib
     
 
-    for t in range(1, 100000):
+    for t in range(1, iterations):
         config['t'] = t
         armPulled = actionSelect('egreedy', config)
         if armPulled == optimalAction:
