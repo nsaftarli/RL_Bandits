@@ -1,10 +1,11 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import argparse
 from ActionSelect import actionSelect
 from Rewards import rollReward, updateProbs
 
-def main():
-    iterations = 100000
+def main(iterations):
+    iterations = iterations
     config = {}
     c = 2
     nArms = 10
@@ -75,6 +76,10 @@ def plotReward(hist):
     plt.show()
 
 
-
 if __name__ == '__main__':
-    main()
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-i', '--iterations', default=100000, type=int)
+    args = parser.parse_args()
+
+    iterations = args.iterations
+    main(iterations)

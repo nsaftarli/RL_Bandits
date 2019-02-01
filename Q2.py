@@ -89,9 +89,9 @@ def plotReward(hist):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('-i', '--iterations', default=100000)
+    parser.add_argument('-i', '--iterations', default=100000, type=int)
     parser.add_argument('-a', '--automaton', default='linear')
-    parser.add_argument('-lr', '--learning_rate', default=0.1)
+    parser.add_argument('-lr', '--learning_rate', default=0.1, type=float)
     args = parser.parse_args()
 
     iterations = args.iterations
