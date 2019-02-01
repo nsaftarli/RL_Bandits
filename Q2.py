@@ -66,7 +66,7 @@ def main(iterations, automaton, learning_rate):
 
 
 def plotHistograms(true, est):
-    plt.suptitle("True Reward Probability Distribution for 10-Armed Bandit Problem and i-th Arm Choice Probability Distribution Using Non-Linear Learning Automata", fontsize=10)
+    plt.suptitle("True Reward Probability Distribution for 10-Armed Bandit Problem and i-th Arm Choice Probability Distribution Using Linear Learning Automata", fontsize=10)
     plt.subplot(1, 2, 1)
     plt.title("True Reward Distribution")
     plt.plot(true)
@@ -76,13 +76,13 @@ def plotHistograms(true, est):
     plt.show()
 
 def plotOptimal(hist):
-    plt.suptitle("Frequency of Optimal Actions for 10-Armed Bandit Problem using Non-Linear Learning Automata", fontsize=14)
+    plt.suptitle("Frequency of Optimal Actions for 10-Armed Bandit Problem using Linear Learning Automata", fontsize=14)
     plt.plot(hist)
     plt.show()
 
 
 def plotReward(hist):
-    plt.suptitle("Average Reward Over Time for 10-Armed Bandit Problem using Non-Linear Learning Automata", fontsize=14)
+    plt.suptitle("Average Reward Over Time for 10-Armed Bandit Problem using Linear Learning Automata", fontsize=14)
     plt.plot(hist)
     plt.show()
 

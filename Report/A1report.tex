@@ -42,9 +42,44 @@ Question 1.  Both the UCB algorithm as well as the $\epsilon$-greedy algorithm w
 	
 	
 	
+Question 2. Both linear and non-linear learning automata were implemented. Running each algorithm for $100,000$ rounds, the following observations were made:
+	\begin{enumerate}
+	\item The learning rate hyper-parameter (\textit{i.e.} $\alpha$) strongly influenced the convergence and speed of the automata. Specifically, a high learning rate was liable to vary the probabilities heavily, causing the optimal choice percentage to drop and the average reward value to converge to a relatively low value. A low learning rate required more steps to converge but did so more often. A low learning rate also resulted in an action probability distribution that was fairly strongly correlated with the distribution of win probabilities for the $k$-arm bandit, as seen in Figure 4 and 5.
+	\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.2]{nlla_pred_hlr}
+	\includegraphics[scale=0.2]{nlla_pred_llr}
+	\caption{The probability distribution of actions taken by Non-Linear Learning Automata with a high learning rate ($\alpha=1$, top) and that of actions taken by one with a low learning rate ($\alpha=0.0001$, bottom).}
+	\end{figure}
 	
+	\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.2]{lla_pred_hlr}
+	\includegraphics[scale=0.2]{lla_pred_llr}
+	\caption{The probability distribution of actions taken by Linear Learning Automata with a high learning rate ($\alpha=1$, top) and that of actions taken by one with a low learning rate ($\alpha=0.0001$, bottom).}
+	\end{figure}
 	
+	It's evident that with a low enough learning rate convergence is more sure to be optimal though slow, while a high learning can force a non-optimal solution, but convergence occurs very quickly.
 	
+
+	\item Non-linear automata were more stochastic in their decision making than linear automata, but both were more stochastic in their decision making than the UCB algorithm. The probability distributions of the arms made it such that action selection varied strongly (depending on learning rate as well). A high learning rate often led to the policy collapsing on to one action, causing the optimal action to never being taken, and averaging a reward value depending on that action. This can be seen in Figure 6 and 7.
+	
+	\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.2]{nlla_opt_hlr}
+	\includegraphics[scale=0.2]{nlla_opt_llr}
+	\caption{The optimal moves taken by Non-Linear Learning Automata with a high learning rate ($\alpha=1$, top) and that of actions taken by one with a low learning rate ($\alpha=0.0001$, bottom).}
+	\end{figure}
+	
+	\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.2]{lla_opt_hlr}
+	\includegraphics[scale=0.2]{lla_opt_llr}
+	\caption{The optimal moves taken by Linear Learning Automata with a high learning rate ($\alpha=1$, top) and that of actions taken by one with a low learning rate ($\alpha=0.0001$, bottom).}
+	\end{figure}
+	
+	\end{enumerate}
+	Conclusion: The UCB and Learning Automata can both model simple reinforcement learning tasks. While Learning Automata provide the ability for a stochastic method of action selection with the learning rate $\alpha$ parameter, a similar parameter can be modeled with the UCB algorithm using the $c$ in $A_t = \argmax_x [Q_t(a) + c\sqrt{\frac{lnt}{N_t(a)}}]$. While using Learning Automata could provide an action selection distribution that correlates more strongly with the probability distribution of rewards, it seems pointless to focus on accurately modeling the non-optimal moves in the 10-arm bandit problem. That is, if the optimal move is known, the sub-optimal moves should not be made. The UCB algorithm provides this by allowing for a measure of degree of uncertainty that decreases over time. It also generally converges to a value quicker than either the linear or non-linear learning automata.
 	
 	
 	

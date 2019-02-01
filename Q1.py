@@ -71,7 +71,7 @@ def plotOptimal(hist):
 
 
 def plotReward(hist):
-    plt.suptitle("Average Reward Over Time for 10-Armed Bandit Problem using Epsilon-Greedy Action Selection", fontsize=14)
+    plt.suptitle("Average Reward Over Time for 10-Armed Bandit Problem using UCB Action Selection", fontsize=14)
     plt.plot(hist)
     plt.show()
 
