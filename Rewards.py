@@ -17,3 +17,23 @@ def rollReward(config):
     if roll <= prob:
         rewardTable[armPulled] = 1
     return rewardTable
+
+def updateAutomatonSuccess(armPulled, probs, lr):
+    left = probs[:armPulled]
+    right = probs[armPulled + 1:]
+    p = probs[armPulled:armPulled + 1]
+    p += lr * (1 - p)
+    left = (1 - lr) * left
+    right = (1 - lr) * right
+    return np.concatenate([left, p, right], axis=0)
+
+def updateAutomatonFailure(armPulled, probs, lr):
+    k = len(probs)
+    incVal = lr / (k-1)
+    left = probs[:armPulled]
+    right = probs[armPulled + 1:]
+    p = probs[armPulled:armPulled + 1]
+    p = (1 - lr) * p
+    left = incVal + (1 - lr) * left
+    right = incVal + (1 - lr) * right
+    return np.concatenate([left, p, right], axis=0)

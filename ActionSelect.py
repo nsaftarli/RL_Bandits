@@ -5,6 +5,8 @@ def actionSelect(action, config):
         indPicked = greedyActionSelection(config)
     elif action == 'ucb':
         indPicked = ucbActionSelection(config)
+    elif action == 'automaton':
+        indPicked = automatonActionSelection(config)
 
     return indPicked
 
@@ -59,6 +61,15 @@ def ucbActionSelection(config):
     actionChosen = np.argmax(actions)
     nTimesChosen[actionChosen] += 1
     return actionChosen, nTimesChosen
+
+# Learning Automaton Action Selection
+def automatonActionSelection(config):
+    probs = config['probs']
+    actionChosen = pickBin(probs)
+    return actionChosen
+
+def pickBin(probs):
+    return np.random.choice(range(len(probs)), p=probs)
 
 
 
